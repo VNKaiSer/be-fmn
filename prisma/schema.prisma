@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id            Int      @id @default(autoincrement())
+  user_name     String   @unique
+  passwordHash  String
+  refresh_token String?
+  address       String?
+  phone         String?
+  role          role     @default(USER)
+  create_at     DateTime @default(now())
+  update_at     DateTime @updatedAt
+  orders        orders[]
+}
+
+enum role {
+  USER
+  ADMIN
+}
+
+model service_types {
+  id        Int        @id @default(autoincrement())
+  name      String
+  create_at DateTime   @default(now())
+  update_at DateTime   @updatedAt
+  services  services[]
+}
+
+model services {
+  id            Int             @id @default(autoincrement())
+  name          String
+  type_id       Int
+  type          service_types   @relation(fields: [type_id], references: [id])
+  create_at     DateTime        @default(now())
+  update_at     DateTime        @updatedAt
+  order_details order_details[]
+}
+
+model pitch_types {
+  id        Int      @id @default(autoincrement())
+  name      String
+  location  String?
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+  pitchs    pitchs[]
+}
+
+model pitchs {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  location          String?
+  type_id           Int
+  type              pitch_types         @relation(fields: [type_id], references: [id])
+  create_at         DateTime            @default(now())
+  update_at         DateTime            @updatedAt
+  booking_schedules booking_schedules[]
+}
+
+model booking_slots {
+  id                Int                 @id @default(autoincrement())
+  start_at          DateTime
+  end_at            DateTime
+  create_at         DateTime            @default(now())
+  update_at         DateTime            @updatedAt
+  booking_schedules booking_schedules[]
+  orders            orders[]
+}
+
+enum status_booking {
+  WAITING_FOR_PAYMENT
+  BOOKED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCEL
+}
+
+model booking_schedules {
+  id              Int            @id @default(autoincrement())
+  pitch_id        Int
+  pitch           pitchs         @relation(fields: [pitch_id], references: [id])
+  booking_slot_id Int
+  booking_slot    booking_slots  @relation(fields: [booking_slot_id], references: [id])
+  booking_date    DateTime
+  status          status_booking
+  create_at       DateTime       @default(now())
+  update_at       DateTime       @updatedAt
+}
+
+model orders {
+  id              Int             @id @default(autoincrement())
+  user_id         Int
+  user            users           @relation(fields: [user_id], references: [id])
+  booking_slot_id Int
+  booking_slot    booking_slots   @relation(fields: [booking_slot_id], references: [id])
+  order_date      DateTime        @default(now())
+  total_price     Float
+  create_at       DateTime        @default(now())
+  update_at       DateTime        @updatedAt
+  order_details   order_details[]
+}
+
+model order_details {
+  id         Int      @id @default(autoincrement())
+  order_id   Int
+  order      orders   @relation(fields: [order_id], references: [id])
+  service_id Int
+  service    services @relation(fields: [service_id], references: [id])
+  quantity   Int
+  price      Float
+  total      Float
+  create_at  DateTime @default(now())
+  update_at  DateTime @updatedAt
+}
