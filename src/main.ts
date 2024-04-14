@@ -14,6 +14,7 @@ async function bootstrap() {
   );
 
   const configService = app.get(ConfigService);
+  app.enableCors();
   // const config = new DocumentBuilder()
   //   .setTitle('API documentation')
   //   .setDescription('')
@@ -36,6 +37,7 @@ async function bootstrap() {
   // app.useGlobalPipes(new ValidationPipe());
   // const reflector = new Reflector();
   // app.useGlobalGuards(new AtGuard(reflector));
+
   await app.listen(configService.get('port'));
 }
 bootstrap();

@@ -22,7 +22,7 @@ export class Middleware implements NestMiddleware {
       })} Handling ${req.method} request to ${url} from IP: ${ip}`,
     );
     switch (path) {
-      case '/register':
+      case '/sign-up':
         rs = await this.valid.register(body);
         if (rs !== true) {
           res.status(400).send(rs);

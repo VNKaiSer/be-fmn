@@ -47,14 +47,15 @@ export class AuthService {
     };
   }
 
-  async signUp(data: AuthDto): Promise<Tokens> {
+  async signUp(data): Promise<Tokens> {
     const passwordHash = this.hashData(data.password);
     const user = await this.prismaService.users.create({
       data: {
-        user_name: data.username,
+        user_name: data.user_name,
         passwordHash: passwordHash,
       },
     });
+    await this.prismaService.pitchs;
     console.log(user);
     const tokens = await this.getTokens(user.id, user.user_name);
     this.updateRefeshToken(user.id, tokens.refresh_token);

@@ -49,7 +49,6 @@ model services {
 model pitch_types {
   id        Int      @id @default(autoincrement())
   name      String
-  location  String?
   create_at DateTime @default(now())
   update_at DateTime @updatedAt
   pitchs    pitchs[]
