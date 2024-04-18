@@ -19,7 +19,7 @@ model users {
   phone         String?
   role          role     @default(USER)
   create_at     DateTime @default(now())
-  update_at     DateTime @updatedAt
+  update_at     DateTime @updatedAt @default(now())
   orders        orders[]
 }
 
@@ -32,17 +32,19 @@ model service_types {
   id        Int        @id @default(autoincrement())
   name      String
   create_at DateTime   @default(now())
-  update_at DateTime   @updatedAt
+  update_at DateTime   @updatedAt @default(now())
   services  services[]
 }
 
 model services {
   id            Int             @id @default(autoincrement())
   name          String
+  image         String           
+  price         Float           @default(0)
   type_id       Int
   type          service_types   @relation(fields: [type_id], references: [id])
   create_at     DateTime        @default(now())
-  update_at     DateTime        @updatedAt
+  update_at     DateTime        @updatedAt @default(now())
   order_details order_details[]
 }
 
@@ -50,7 +52,7 @@ model pitch_types {
   id        Int      @id @default(autoincrement())
   name      String
   create_at DateTime @default(now())
-  update_at DateTime @updatedAt
+  update_at DateTime @updatedAt @default(now())
   pitchs    pitchs[]
 }
 
@@ -58,10 +60,11 @@ model pitchs {
   id                Int                 @id @default(autoincrement())
   name              String
   location          String?
+  price             Float @default(0)
   type_id           Int
   type              pitch_types         @relation(fields: [type_id], references: [id])
   create_at         DateTime            @default(now())
-  update_at         DateTime            @updatedAt
+  update_at         DateTime            @updatedAt @default(now())
   booking_schedules booking_schedules[]
 }
 
@@ -70,7 +73,7 @@ model booking_slots {
   start_at          DateTime
   end_at            DateTime
   create_at         DateTime            @default(now())
-  update_at         DateTime            @updatedAt
+  update_at         DateTime            @updatedAt @default(now())
   booking_schedules booking_schedules[]
   orders            orders[]
 }
@@ -92,7 +95,7 @@ model booking_schedules {
   booking_date    DateTime
   status          status_booking
   create_at       DateTime       @default(now())
-  update_at       DateTime       @updatedAt
+  update_at       DateTime       @updatedAt @default(now())
 }
 
 model orders {
@@ -104,7 +107,7 @@ model orders {
   order_date      DateTime        @default(now())
   total_price     Float
   create_at       DateTime        @default(now())
-  update_at       DateTime        @updatedAt
+  update_at       DateTime        @updatedAt @default(now())
   order_details   order_details[]
 }
 
@@ -118,5 +121,5 @@ model order_details {
   price      Float
   total      Float
   create_at  DateTime @default(now())
-  update_at  DateTime @updatedAt
+  update_at  DateTime @updatedAt @default(now())
 }

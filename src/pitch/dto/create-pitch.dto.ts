@@ -1,3 +1,6 @@
-import { Pitch } from '../entities/pitch.entity';
-
-export class CreatePitchDto extends Pitch {}
+export class CreatePitchDto {
+  pitch_name: string;
+  pitch_address: string;
+  pitch_size: number;
+  pitch_price: number;
+}

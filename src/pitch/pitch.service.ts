@@ -8,7 +8,12 @@ export class PitchService {
   constructor(private prismaService: PrismaService) {}
   async create(createPitchDto: CreatePitchDto) {
     return await this.prismaService.pitchs.create({
-      data: createPitchDto,
+      data: {
+        name: createPitchDto.pitch_name,
+        location: createPitchDto.pitch_address,
+        type_id: createPitchDto.pitch_size,
+        price: createPitchDto.pitch_price,
+      },
     });
   }
 
@@ -29,7 +34,12 @@ export class PitchService {
       where: {
         id: updatePitchDto.id,
       },
-      data: updatePitchDto,
+      data: {
+        name: updatePitchDto.pitch_name,
+        location: updatePitchDto.pitch_address,
+        type_id: updatePitchDto.pitch_size,
+        price: updatePitchDto.pitch_price,
+      },
     });
   }
 

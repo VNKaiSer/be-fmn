@@ -1,3 +1,5 @@
-import { Pitch } from '../entities/pitch.entity';
+import { CreatePitchDto } from './create-pitch.dto';
 
-export class UpdatePitchDto extends Pitch {}
+export class UpdatePitchDto extends CreatePitchDto {
+  id: number;
+}
