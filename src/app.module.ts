@@ -10,6 +10,8 @@ import { AtGuard } from './auth/common/guards';
 // import { Middleware } from './app.middleware';
 import { Valid } from './utils/validUser';
 import { PitchModule } from './pitch/pitch.module';
+import { ServiceModule } from './service/service.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { PitchModule } from './pitch/pitch.module';
     PrismaModule,
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
     PitchModule,
+    ServiceModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [
